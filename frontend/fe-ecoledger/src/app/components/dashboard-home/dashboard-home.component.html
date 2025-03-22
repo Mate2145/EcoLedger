@@ -1,0 +1,90 @@
+<div class="dashboard-home">
+    <div class="welcome-section">
+      <h1>Welcome, {{currentUser?.firstName}}!</h1>
+      <p>Here's an overview of your EcoLedger activity</p>
+    </div>
+    
+    <div class="dashboard-grid">
+      <div class="dashboard-card wallet-card">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3>Wallet</h3>
+            </div>
+          </ng-template>
+          
+          <div class="wallet-status">
+            <div class="wallet-icon">
+              <i class="pi pi-wallet"></i>
+            </div>
+            <div class="wallet-info">
+              <p class="status-text">No wallet connected</p>
+              <p class="status-description">Connect your wallet to access the marketplace and manage your assets</p>
+            </div>
+          </div>
+          
+          <ng-template pTemplate="footer">
+            <button pButton label="Connect Wallet" icon="pi pi-link" (click)="connectWallet()"></button>
+          </ng-template>
+        </p-card>
+      </div>
+      
+      <div class="dashboard-card stats-card">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3>Your Stats</h3>
+            </div>
+          </ng-template>
+          
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-value">0</span>
+              <span class="stat-label">Carbon Credits</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">0</span>
+              <span class="stat-label">Land Parcels</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">0</span>
+              <span class="stat-label">Transactions</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">$0</span>
+              <span class="stat-label">Total Value</span>
+            </div>
+          </div>
+        </p-card>
+      </div>
+      
+      <div class="dashboard-card chart-card">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3>Activity Overview</h3>
+            </div>
+          </ng-template>
+          
+          <div class="chart-container">
+            <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+          </div>
+        </p-card>
+      </div>
+      
+      <div class="dashboard-card activity-card">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h3>Recent Activity</h3>
+            </div>
+          </ng-template>
+          
+          <div class="empty-activity">
+            <i class="pi pi-inbox"></i>
+            <p>No recent activity</p>
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>

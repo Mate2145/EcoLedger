@@ -1,0 +1,182 @@
+.register-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .register-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .step-content {
+    margin-top: 2rem;
+    
+    h3 {
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      color: #444;
+    }
+    
+    p {
+      margin-bottom: 1.5rem;
+      color: #666;
+    }
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .form-field {
+    margin-bottom: 1rem;
+    
+    label {
+      display: block;
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+      color: #444;
+    }
+    
+    input, p-password {
+      width: 100%;
+    }
+    
+    small.p-error {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2.5rem;
+    
+    &.centered {
+      justify-content: center;
+    }
+  }
+  
+  .confirmation {
+    text-align: center;
+    padding: 2rem 0;
+    
+    .confirmation-icon {
+      font-size: 4rem;
+      color: var(--green-500);
+      margin-bottom: 1.5rem;
+    }
+    
+    h3 {
+      margin-bottom: 1rem;
+      font-size: 1.75rem;
+    }
+    
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+  }
+  
+  .upload-status {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    color: var(--green-500);
+    
+    i {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+  }
+  
+  :host ::ng-deep {
+    .p-card {
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      
+      .p-card-body {
+        padding: 2rem;
+      }
+    }
+    
+    .p-steps {
+      .p-steps-item {
+        .p-menuitem-link {
+          background: transparent;
+        }
+      }
+    }
+    
+    .p-inputtext {
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      transition: all 0.2s;
+      
+      &:hover {
+        border-color: var(--primary-300);
+      }
+      
+      &:focus {
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        border-color: var(--primary-color);
+      }
+    }
+    
+    .p-password {
+      width: 100%;
+      
+      .p-password-input {
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+      }
+    }
+    
+    .p-button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      
+      &.p-button-secondary {
+        background-color: #f3f4f6;
+        color: #374151;
+        border-color: #f3f4f6;
+        
+        &:hover {
+          background-color: #e5e7eb;
+          border-color: #e5e7eb;
+        }
+      }
+    }
+    
+    .p-fileupload {
+      .p-fileupload-buttonbar {
+        padding: 1.5rem;
+        background-color: #f9fafb;
+        border-radius: 8px 8px 0 0;
+      }
+      
+      .p-fileupload-content {
+        padding: 1.5rem;
+        border-radius: 0 0 8px 8px;
+      }
+    }
+  }
+  
+  .w-full {
+    width: 100%;
+  }

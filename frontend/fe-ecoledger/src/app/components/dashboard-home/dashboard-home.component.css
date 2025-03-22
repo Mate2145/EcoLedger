@@ -1,0 +1,161 @@
+.dashboard-home .welcome-section {
+    margin-bottom: 2rem;
+  }
+  
+  .dashboard-home .welcome-section h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2f4f4f;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dashboard-home .welcome-section p {
+    color: #6c757d;
+    font-size: 1rem;
+  }
+  
+  .dashboard-home .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 992px) {
+    .dashboard-home .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .dashboard-home .dashboard-card.chart-card,
+  .dashboard-home .dashboard-card.activity-card {
+    grid-column: span 2;
+  }
+  
+  @media (max-width: 992px) {
+    .dashboard-home .dashboard-card.chart-card,
+    .dashboard-home .dashboard-card.activity-card {
+      grid-column: span 1;
+    }
+  }
+  
+  .dashboard-home .card-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .dashboard-home .card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2f4f4f;
+  }
+  
+  .dashboard-home .wallet-status {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 0;
+  }
+  
+  .dashboard-home .wallet-status .wallet-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background-color: #e8f5e9;
+    border-radius: 50%;
+    margin-right: 1.5rem;
+  }
+  
+  .dashboard-home .wallet-status .wallet-icon i {
+    font-size: 1.75rem;
+    color: #4caf50;
+  }
+  
+  .dashboard-home .wallet-status .wallet-info {
+    flex: 1;
+  }
+  
+  .dashboard-home .wallet-status .wallet-info .status-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #2f4f4f;
+  }
+  
+  .dashboard-home .wallet-status .wallet-info .status-description {
+    color: #6c757d;
+    margin: 0;
+  }
+  
+  .dashboard-home .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+  
+  .dashboard-home .stats-grid .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .dashboard-home .stats-grid .stat-item .stat-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2f4f4f;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dashboard-home .stats-grid .stat-item .stat-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+  
+  .dashboard-home .chart-container {
+    height: 300px;
+    padding: 1rem 0;
+  }
+  
+  .dashboard-home .empty-activity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    color: #6c757d;
+  }
+  
+  .dashboard-home .empty-activity i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+  
+  .dashboard-home .empty-activity p {
+    font-size: 1rem;
+  }
+  
+  :host ::ng-deep .p-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+  }
+  
+  :host ::ng-deep .p-card .p-card-body {
+    padding: 0;
+  }
+  
+  :host ::ng-deep .p-card .p-card-content {
+    padding: 1rem;
+  }
+  
+  :host ::ng-deep .p-card .p-card-footer {
+    padding: 1rem;
+    border-top: 1px solid #e9ecef;
+  }
+  
+  :host ::ng-deep .p-button {
+    width: 100%;
+  }

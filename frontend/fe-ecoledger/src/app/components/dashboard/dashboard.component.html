@@ -1,0 +1,60 @@
+<div class="dashboard-container">
+    <!-- Desktop Navigation -->
+    <div class="desktop-nav">
+      <div class="logo">
+        <img src="assets/images/ecoledger-logo.png" alt="EcoLedger" />
+        <span class="logo-text">EcoLedger</span>
+      </div>
+      
+      <p-menubar [model]="menuItems">
+        <ng-template pTemplate="end">
+          <div class="user-profile">
+            <p-avatar [label]="userInitials" styleClass="mr-2" shape="circle"></p-avatar>
+            <p-menu #profileMenu [popup]="true" [model]="profileMenuItems"></p-menu>
+            <button 
+              pButton 
+              type="button" 
+              (click)="profileMenu.toggle($event)" 
+              class="p-button-text p-button-rounded"
+              icon="pi pi-chevron-down">
+            </button>
+          </div>
+        </ng-template>
+      </p-menubar>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+      <div class="mobile-header">
+        <button pButton icon="pi pi-bars" class="p-button-text" (click)="toggleMobileMenu()"></button>
+        <div class="logo">
+          <img src="assets/images/ecoledger-logo.png" alt="EcoLedger" />
+          <span class="logo-text">EcoLedger</span>
+        </div>
+        <p-avatar [label]="userInitials" shape="circle" (click)="profileMenu.toggle($event)"></p-avatar>
+        <p-menu #profileMenu [popup]="true" [model]="profileMenuItems"></p-menu>
+      </div>
+      
+      <p-sidebar [(visible)]="mobileMenuVisible" position="left" styleClass="mobile-sidebar">
+        <div class="mobile-menu">
+          <div class="logo">
+            <img src="assets/images/ecoledger-logo.png" alt="EcoLedger" />
+            <span class="logo-text">EcoLedger</span>
+          </div>
+          <ul class="mobile-menu-items">
+            <li *ngFor="let item of menuItems">
+              <a [routerLink]="item.routerLink" (click)="mobileMenuVisible = false">
+                <i [class]="item.icon"></i>
+                <span>{{item.label}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </p-sidebar>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
