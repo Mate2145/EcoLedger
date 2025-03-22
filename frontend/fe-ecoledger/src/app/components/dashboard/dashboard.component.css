@@ -141,3 +141,26 @@
     background-color: #4caf50;
     color: #ffffff;
   }
+
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .wallet-connect-container {
+    margin-right: 1rem;
+  }
+  
+  .mobile-wallet-connect {
+    padding: 1rem;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .wallet-connect-container {
+      display: none;
+    }
+  }

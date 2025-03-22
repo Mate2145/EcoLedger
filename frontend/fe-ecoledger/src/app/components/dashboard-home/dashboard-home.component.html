@@ -1,4 +1,6 @@
 <div class="dashboard-home">
+    <p-toast></p-toast>
+    
     <div class="welcome-section">
       <h1>Welcome, {{currentUser?.firstName}}!</h1>
       <p>Here's an overview of your EcoLedger activity</p>
@@ -13,7 +15,7 @@
             </div>
           </ng-template>
           
-          <div class="wallet-status">
+          <div class="wallet-status" *ngIf="!walletInfo?.connected">
             <div class="wallet-icon">
               <i class="pi pi-wallet"></i>
             </div>
@@ -23,8 +25,28 @@
             </div>
           </div>
           
+          <div class="wallet-status" *ngIf="walletInfo?.connected">
+            <div class="wallet-icon connected">
+              <i class="pi pi-wallet"></i>
+            </div>
+            <div class="wallet-info">
+              <p class="status-text">Wallet Connected</p>
+              <p class="wallet-address">{{walletInfo?.address || ''}}</p>
+              <p class="wallet-balance">Balance: {{walletInfo?.balance || '0'}}</p>
+              <p class="token-balance">ECO Tokens: {{tokenBalance}}</p>
+            </div>
+          </div>
+          
           <ng-template pTemplate="footer">
-            <button pButton label="Connect Wallet" icon="pi pi-link" (click)="connectWallet()"></button>
+            <app-wallet-connect *ngIf="!walletInfo?.connected"></app-wallet-connect>
+            <button 
+              *ngIf="walletInfo?.connected" 
+              pButton 
+              label="Claim ECO Tokens" 
+              icon="pi pi-plus-circle" 
+              (click)="claimTokens()"
+              class="claim-button">
+            </button>
           </ng-template>
         </p-card>
       </div>
@@ -39,8 +61,8 @@
           
           <div class="stats-grid">
             <div class="stat-item">
-              <span class="stat-value">0</span>
-              <span class="stat-label">Carbon Credits</span>
+              <span class="stat-value">{{tokenBalance}}</span>
+              <span class="stat-label">ECO Tokens</span>
             </div>
             <div class="stat-item">
               <span class="stat-value">0</span>
@@ -80,7 +102,12 @@
             </div>
           </ng-template>
           
-          <div class="empty-activity">
+          <div class="empty-activity" *ngIf="!walletInfo?.connected">
+            <i class="pi pi-inbox"></i>
+            <p>Connect your wallet to see your activity</p>
+          </div>
+          
+          <div class="empty-activity" *ngIf="walletInfo?.connected">
             <i class="pi pi-inbox"></i>
             <p>No recent activity</p>
           </div>

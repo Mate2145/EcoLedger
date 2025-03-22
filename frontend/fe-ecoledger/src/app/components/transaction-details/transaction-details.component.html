@@ -1,0 +1,101 @@
+<div class="transaction-details-container">
+    <p-toast></p-toast>
+    
+    <div class="transaction-header">
+      <button pButton icon="pi pi-arrow-left" label="Back to Marketplace" class="p-button-text" (click)="goBack()"></button>
+      <h1>Transaction Details</h1>
+    </div>
+    
+    <div class="loading-spinner" *ngIf="loading">
+      <p-progressSpinner></p-progressSpinner>
+      <p>Loading transaction details...</p>
+    </div>
+    
+    <div class="transaction-content" *ngIf="!loading && transaction">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="transaction-card-header">
+            <div class="transaction-type">
+              <i [class]="getTransactionTypeIcon(transaction.type)"></i>
+              <p-tag [value]="transaction.type" [severity]="getTransactionTypeSeverity(transaction.type)"></p-tag>
+            </div>
+            <p-tag [value]="transaction.status" [severity]="getTransactionStatusSeverity(transaction.status)"></p-tag>
+          </div>
+        </ng-template>
+        
+        <div class="transaction-summary">
+          <div class="transaction-amount">
+            <h2>{{transaction.tokenAmount}} CARBON</h2>
+            <p *ngIf="transaction.type === 'sale' || transaction.type === 'purchase'">
+              for {{transaction.totalAmount}} {{transaction.currency}}
+            </p>
+          </div>
+        </div>
+        
+        <div class="transaction-details-grid">
+          <div class="detail-item">
+            <span class="label">Transaction ID</span>
+            <span class="value">{{transaction.id}}</span>
+          </div>
+          
+          <div class="detail-item" *ngIf="transaction.offerId">
+            <span class="label">Offer ID</span>
+            <span class="value">{{transaction.offerId}}</span>
+          </div>
+          
+          <div class="detail-item">
+            <span class="label">Type</span>
+            <span class="value">{{transaction.type}}</span>
+          </div>
+          
+          <div class="detail-item">
+            <span class="label">Status</span>
+            <span class="value">{{transaction.status}}</span>
+          </div>
+          
+          <div class="detail-item">
+            <span class="label">Token Amount</span>
+            <span class="value">{{transaction.tokenAmount}} CARBON</span>
+          </div>
+          
+          <div class="detail-item" *ngIf="transaction.pricePerToken > 0">
+            <span class="label">Price Per Token</span>
+            <span class="value">{{transaction.pricePerToken}} {{transaction.currency}}</span>
+          </div>
+          
+          <div class="detail-item" *ngIf="transaction.totalAmount > 0">
+            <span class="label">Total Amount</span>
+            <span class="value">{{transaction.totalAmount}} {{transaction.currency}}</span>
+          </div>
+          
+          <div class="detail-item">
+            <span class="label">Created At</span>
+            <span class="value">{{formatDate(transaction.createdAt)}}</span>
+          </div>
+          
+          <div class="detail-item" *ngIf="transaction.completedAt">
+            <span class="label">Completed At</span>
+            <span class="value">{{formatDate(transaction.completedAt)}}</span>
+          </div>
+          
+          <div class="detail-item" *ngIf="transaction.txHash">
+            <span class="label">Transaction Hash</span>
+            <span class="value hash-value">{{transaction.txHash}}</span>
+          </div>
+        </div>
+        
+        <ng-template pTemplate="footer">
+          <div class="transaction-actions">
+            <button 
+              pButton 
+              label="View on Explorer" 
+              icon="pi pi-external-link" 
+              class="p-button-outlined" 
+              (click)="viewOnExplorer()"
+              *ngIf="transaction.txHash"
+            ></button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>

@@ -6,6 +6,7 @@ export class LedgerUser {
     phone: string;
     email: string;
     proofOfLand: string; // URL or file identifier for the uploaded certificate
+    walletAddress?: string;
   
     constructor(
       id: string = '',

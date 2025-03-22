@@ -1,0 +1,61 @@
+<p-toast></p-toast>
+
+<!-- Wallet Button -->
+<div class="wallet-button-container">
+  <button 
+    *ngIf="!walletInfo?.connected" 
+    pButton 
+    label="Connect Wallet" 
+    icon="pi pi-wallet" 
+    (click)="showWalletDialog()"
+    class="p-button-outlined">
+  </button>
+  
+  <div *ngIf="walletInfo?.connected" class="wallet-info">
+    <div class="wallet-address">
+      <i class="pi pi-check-circle" style="color: #4caf50;"></i>
+      <span>{{ getShortAddress(walletInfo?.address || '') }}</span>
+    </div>
+    <button 
+      pButton 
+      icon="pi pi-sign-out" 
+      class="p-button-text p-button-rounded p-button-sm"
+      (click)="disconnectWallet()">
+    </button>
+  </div>
+</div>
+
+<!-- Wallet Connection Dialog -->
+<p-dialog 
+  [(visible)]="walletDialogVisible" 
+  [style]="{width: '450px'}" 
+  header="Connect Wallet" 
+  [modal]="true"
+  [draggable]="false" 
+  [resizable]="false">
+  
+  <div class="wallet-options">
+    <p-card styleClass="wallet-card" (click)="connectWallet(walletTypes.METAMASK)">
+      <div class="wallet-option">
+        <img src="../../../assets/images/metamask-logo.png" alt="MetaMask" class="wallet-logo" />
+        <h3>MetaMask</h3>
+        <p>Connect to your MetaMask wallet</p>
+      </div>
+    </p-card>
+  </div>
+  
+  <div *ngIf="isConnecting" class="connecting-message">
+    <i class="pi pi-spin pi-spinner"></i>
+    <span>Connecting to wallet...</span>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <button 
+      pButton 
+      label="Cancel" 
+      icon="pi pi-times" 
+      (click)="hideWalletDialog()" 
+      class="p-button-text">
+    </button>
+  </ng-template>
+</p-dialog>

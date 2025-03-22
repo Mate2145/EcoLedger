@@ -1,10 +1,15 @@
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard = () => {
+export const authGuard = (route: ActivatedRouteSnapshot) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+
+  // Allow access to register and login routes without authentication
+  if (route.routeConfig?.path === 'register' || route.routeConfig?.path === 'login') {
+    return true;
+  }
 
   if (authService.isLoggedIn()) {
     return true;

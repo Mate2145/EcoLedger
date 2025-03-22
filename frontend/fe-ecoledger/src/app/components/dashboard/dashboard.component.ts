@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -7,8 +7,11 @@ import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { SidebarModule } from 'primeng/sidebar';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { WalletService, WalletInfo } from '../../services/wallet.service';
 import { LedgerUser } from '../../models/ledger-user';
+import { WalletConnectComponent } from '../wallet-connect/wallet-connect.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,19 +23,24 @@ import { LedgerUser } from '../../models/ledger-user';
     ButtonModule,
     AvatarModule,
     MenuModule,
-    SidebarModule
-  ],
+    SidebarModule,
+    WalletConnectComponent
+],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardLayoutComponent implements OnInit {
+export class DashboardLayoutComponent implements OnInit, OnDestroy {
   currentUser: LedgerUser | null = null;
+  walletInfo: WalletInfo | null = null;
   menuItems: MenuItem[] = [];
   profileMenuItems: MenuItem[] = [];
   mobileMenuVisible: boolean = false;
+  
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,
+    private walletService: WalletService,
     private router: Router
   ) {}
 
@@ -45,6 +53,17 @@ export class DashboardLayoutComponent implements OnInit {
     }
     
     this.initializeMenu();
+    
+    this.walletService.wallet$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(wallet => {
+        this.walletInfo = wallet;
+      });
+  }
+  
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   initializeMenu(): void {
@@ -57,7 +76,7 @@ export class DashboardLayoutComponent implements OnInit {
       {
         label: 'Market',
         icon: 'pi pi-shopping-cart',
-        routerLink: '/dashboard/market'
+        routerLink: '/dashboard/carbon-marketplace'
       },
       {
         label: 'Profile',
@@ -74,8 +93,7 @@ export class DashboardLayoutComponent implements OnInit {
       },
       {
         label: 'Settings',
-        icon: 'pi pi-cog',
-        routerLink: '/dashboard/settings'
+        icon: 'pi pi-cog'
       },
       {
         separator: true

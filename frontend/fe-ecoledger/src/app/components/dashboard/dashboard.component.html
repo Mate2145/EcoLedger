@@ -2,22 +2,21 @@
     <!-- Desktop Navigation -->
     <div class="desktop-nav">
       <div class="logo">
-        <img src="assets/images/ecoledger-logo.png" alt="EcoLedger" />
+        <img src="../../../assets/images/ecoledger-logo.png" alt="EcoLedger" />
         <span class="logo-text">EcoLedger</span>
       </div>
       
       <p-menubar [model]="menuItems">
         <ng-template pTemplate="end">
-          <div class="user-profile">
-            <p-avatar [label]="userInitials" styleClass="mr-2" shape="circle"></p-avatar>
-            <p-menu #profileMenu [popup]="true" [model]="profileMenuItems"></p-menu>
-            <button 
-              pButton 
-              type="button" 
-              (click)="profileMenu.toggle($event)" 
-              class="p-button-text p-button-rounded"
-              icon="pi pi-chevron-down">
-            </button>
+          <div class="user-actions">
+            <app-wallet-connect class="wallet-connect-container"></app-wallet-connect>
+            
+            <div class="user-profile">
+              <p-avatar [label]="userInitials" styleClass="mr-2" shape="circle"></p-avatar>
+              <span class="user-name">{{currentUser?.firstName}} {{currentUser?.lastName}}</span>
+              <button pButton pRipple type="button" icon="pi pi-angle-down" class="p-button-text p-button-rounded" (click)="menu.toggle($event)"></button>
+              <p-menu #menu [model]="profileMenuItems" [popup]="true"></p-menu>
+            </div>
           </div>
         </ng-template>
       </p-menubar>
@@ -28,25 +27,38 @@
       <div class="mobile-header">
         <button pButton icon="pi pi-bars" class="p-button-text" (click)="toggleMobileMenu()"></button>
         <div class="logo">
-          <img src="assets/images/ecoledger-logo.png" alt="EcoLedger" />
+          <img src="../../../assets/images/ecoledger-logo.png" alt="EcoLedger" />
           <span class="logo-text">EcoLedger</span>
         </div>
-        <p-avatar [label]="userInitials" shape="circle" (click)="profileMenu.toggle($event)"></p-avatar>
-        <p-menu #profileMenu [popup]="true" [model]="profileMenuItems"></p-menu>
+        <p-avatar [label]="userInitials" styleClass="mr-2" shape="circle" (click)="menu.toggle($event)"></p-avatar>
+        <p-menu #menu [model]="profileMenuItems" [popup]="true"></p-menu>
       </div>
       
       <p-sidebar [(visible)]="mobileMenuVisible" position="left" styleClass="mobile-sidebar">
-        <div class="mobile-menu">
-          <div class="logo">
-            <img src="assets/images/ecoledger-logo.png" alt="EcoLedger" />
-            <span class="logo-text">EcoLedger</span>
-          </div>
-          <ul class="mobile-menu-items">
-            <li *ngFor="let item of menuItems">
-              <a [routerLink]="item.routerLink" (click)="mobileMenuVisible = false">
-                <i [class]="item.icon"></i>
-                <span>{{item.label}}</span>
+        <div class="mobile-menu-items">
+          <ul>
+            <li>
+              <a routerLink="/dashboard" (click)="mobileMenuVisible = false">
+                <i class="pi pi-home"></i>
+                <span>Home</span>
               </a>
+            </li>
+            <li>
+              <a routerLink="/dashboard/market" (click)="mobileMenuVisible = false">
+                <i class="pi pi-shopping-cart"></i>
+                <span>Market</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/dashboard/profile" (click)="mobileMenuVisible = false">
+                <i class="pi pi-user"></i>
+                <span>Profile</span>
+              </a>
+            </li>
+            <li>
+              <div class="mobile-wallet-connect">
+                <app-wallet-connect></app-wallet-connect>
+              </div>
             </li>
           </ul>
         </div>

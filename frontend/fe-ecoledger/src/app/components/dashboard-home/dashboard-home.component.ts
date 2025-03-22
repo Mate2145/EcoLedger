@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { WalletService,WalletInfo,WalletType } from '../../services/wallet.service';
 import { LedgerUser } from '../../models/ledger-user';
+import { WalletConnectComponent } from '../wallet-connect/wallet-connect.component';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -13,21 +18,47 @@ import { LedgerUser } from '../../models/ledger-user';
     CommonModule,
     CardModule,
     ButtonModule,
-    ChartModule
+    ChartModule,
+    ToastModule,
+    WalletConnectComponent
   ],
+  providers: [MessageService],
   templateUrl: './dashboard-home.component.html',
   styleUrls: ['./dashboard-home.component.css']
 })
-export class DashboardHomeComponent implements OnInit {
+export class DashboardHomeComponent implements OnInit, OnDestroy {
   currentUser: LedgerUser | null = null;
+  walletInfo: WalletInfo | null = null;
   chartData: any;
   chartOptions: any;
+  tokenBalance: number = 0;
   
-  constructor(private authService: AuthService) {}
+  private destroy$ = new Subject<void>();
+  
+  constructor(
+    private authService: AuthService,
+    private walletService: WalletService,
+    private messageService: MessageService
+  ) {}
   
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.initChartData();
+    
+    this.walletService.wallet$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(wallet => {
+        this.walletInfo = wallet;
+        
+        if (wallet?.connected) {
+          this.loadTokenBalance();
+        }
+      });
+  }
+  
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   
   initChartData(): void {
@@ -62,8 +93,23 @@ export class DashboardHomeComponent implements OnInit {
     };
   }
   
-  connectWallet(): void {
-    // This will be implemented in Phase 2
-    console.log('Connect wallet clicked');
+  loadTokenBalance(): void {
+    this.walletService.getTokenBalance().subscribe(balance => {
+      this.tokenBalance = balance;
+    });
+  }
+  
+  claimTokens(): void {
+    // Simulate token claiming
+    setTimeout(() => {
+      const claimedAmount = Math.floor(Math.random() * 50) + 10;
+      this.tokenBalance += claimedAmount;
+      
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Tokens Claimed',
+        detail: `You've successfully claimed ${claimedAmount} ECO tokens!`
+      });
+    }, 1500);
   }
 }

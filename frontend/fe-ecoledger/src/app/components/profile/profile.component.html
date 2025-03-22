@@ -1,0 +1,240 @@
+<div class="profile-container">
+    <p-toast></p-toast>
+    
+    <div class="profile-header">
+      <h1>User Profile</h1>
+      <p>Manage your profile information and settings</p>
+    </div>
+    
+    <div class="loading-spinner" *ngIf="loading.profile">
+      <p-progressSpinner></p-progressSpinner>
+      <p>Loading profile information...</p>
+    </div>
+    
+    <div class="profile-content" *ngIf="!loading.profile && userProfile">
+      <p-tabView>
+        <!-- Profile Information Tab -->
+        <p-tabPanel header="Profile Information">
+          <div class="profile-info-container">
+            <div class="profile-summary">
+              <div class="profile-avatar">
+                <p-avatar 
+                  [image]="userProfile.avatarUrl" 
+                  size="xlarge" 
+                  shape="circle"
+                  [style]="{'width': '100px', 'height': '100px'}"
+                ></p-avatar>
+              </div>
+              
+              <div class="profile-details">
+                <h2>{{userProfile.fullName}}</h2>
+                <p class="username">{{'@' + userProfile.username}}</p>
+                <p class="join-date">Member since {{formatDate(userProfile.joinDate)}}</p>
+                <p class="bio">{{userProfile.bio}}</p>
+              </div>
+            </div>
+            
+            <p-card header="Edit Profile">
+              <div class="profile-form">
+                <div class="form-field">
+                  <label for="fullName">Full Name</label>
+                  <input 
+                    id="fullName" 
+                    type="text" 
+                    pInputText 
+                    [(ngModel)]="editableProfile.fullName" 
+                    placeholder="Your full name"
+                  >
+                </div>
+                
+                <div class="form-field">
+                  <label for="bio">Bio</label>
+                  <textarea 
+                    id="bio" 
+                    pInputTextarea 
+                    [(ngModel)]="editableProfile.bio" 
+                    placeholder="Tell us about yourself"
+                    [rows]="5"
+                  ></textarea>
+                </div>
+                
+                <div class="form-field">
+                  <label for="avatarUrl">Avatar URL</label>
+                  <input 
+                    id="avatarUrl" 
+                    type="text" 
+                    pInputText 
+                    [(ngModel)]="editableProfile.avatarUrl" 
+                    placeholder="URL to your avatar image"
+                  >
+                </div>
+                
+                <div class="form-actions">
+                  <button 
+                    pButton 
+                    label="Update Profile" 
+                    icon="pi pi-check" 
+                    (click)="updateProfile()"
+                    [loading]="loading.updateProfile"
+                  ></button>
+                </div>
+              </div>
+            </p-card>
+          </div>
+        </p-tabPanel>
+        
+        <!-- Wallet Information Tab -->
+        <p-tabPanel header="Wallet Information">
+          <div class="wallet-info-container">
+            <p-card header="Connected Wallet">
+              <div class="wallet-status">
+                <div *ngIf="userProfile.walletAddress; else notConnected">
+                  <p><strong>Wallet Address:</strong> {{getShortAddress(userProfile.walletAddress)}}</p>
+                  <p><strong>Connection Status:</strong> <span class="connected-status">Connected</span></p>
+                  
+                  <button 
+                    pButton 
+                    label="Disconnect Wallet" 
+                    icon="pi pi-times" 
+                    class="p-button-outlined p-button-danger" 
+                    (click)="disconnectWallet()"
+                  ></button>
+                </div>
+                
+                <ng-template #notConnected>
+                  <p>No wallet connected to your profile.</p>
+                  <button 
+                    pButton 
+                    label="Connect Wallet" 
+                    icon="pi pi-wallet" 
+                    (click)="connectWallet()"
+                  ></button>
+                </ng-template>
+              </div>
+            </p-card>
+            
+            <p-card header="Carbon Activity" *ngIf="userProfile.carbonActivity">
+              <div class="carbon-activity">
+                <div class="activity-item">
+                  <span class="label">Total Carbon Tokens</span>
+                  <span class="value">{{userProfile.carbonActivity.totalCarbonTokens}} CARBON</span>
+                </div>
+                
+                <div class="activity-item">
+                  <span class="label">Total Transactions</span>
+                  <span class="value">{{userProfile.carbonActivity.totalTransactions}}</span>
+                </div>
+                
+                <div class="activity-item">
+                  <span class="label">Carbon Offset</span>
+                  <span class="value">{{userProfile.carbonActivity.carbonOffset}} tons CO2</span>
+                </div>
+                
+                <div class="activity-item">
+                  <span class="label">Carbon Footprint</span>
+                  <span class="value">{{userProfile.carbonActivity.carbonFootprint}} tons CO2</span>
+                </div>
+                
+                <div class="activity-item">
+                  <span class="label">Last Activity</span>
+                  <span class="value">{{formatDate(userProfile.carbonActivity.lastActivity)}}</span>
+                </div>
+              </div>
+            </p-card>
+          </div>
+        </p-tabPanel>
+        
+        <!-- Settings Tab -->
+        <p-tabPanel header="Settings">
+          <div class="settings-container" *ngIf="editableProfile.settings">
+            <p-card header="Notification Settings">
+              <div class="settings-form">
+                <div class="form-field switch-field">
+                  <label for="emailNotifications">Email Notifications</label>
+                  <p-inputSwitch 
+                    id="emailNotifications" 
+                    [(ngModel)]="editableProfile.settings.emailNotifications"
+                  ></p-inputSwitch>
+                </div>
+                
+                <div class="form-field switch-field">
+                  <label for="twoFactorEnabled">Two-Factor Authentication</label>
+                  <p-inputSwitch 
+                    id="twoFactorEnabled" 
+                    [(ngModel)]="editableProfile.settings.twoFactorEnabled"
+                  ></p-inputSwitch>
+                </div>
+              </div>
+            </p-card>
+            
+            <p-card header="Appearance Settings">
+              <div class="settings-form">
+                <div class="form-field">
+                  <label for="theme">Theme</label>
+                  <p-dropdown 
+                    id="theme" 
+                    [options]="themeOptions" 
+                    [(ngModel)]="editableProfile.settings.theme" 
+                    optionLabel="label" 
+                    optionValue="value"
+                    [style]="{'width': '100%'}"
+                  ></p-dropdown>
+                </div>
+                
+                <div class="form-field">
+                  <label for="language">Language</label>
+                  <p-dropdown 
+                    id="language" 
+                    [options]="languageOptions" 
+                    [(ngModel)]="editableProfile.settings.language" 
+                    optionLabel="label" 
+                    optionValue="value"
+                    [style]="{'width': '100%'}"
+                  ></p-dropdown>
+                </div>
+              </div>
+            </p-card>
+            
+<!--             <p-card header="Privacy Settings">
+              <div class="settings-form">
+                <div class="form-field switch-field">
+                  <label for="showWalletAddress">Show Wallet Address</label>
+                  <p-inputSwitch 
+                    id="showWalletAddress" 
+                    [ngModel]="editableProfile.settings?.privacySettings?.showWalletAddress || false"
+                    (ngModelChange)="updatePrivacySetting('showWalletAddress', $event)"
+                  ></p-inputSwitch>
+                </div>
+                
+                <div class="form-field switch-field">
+                  <label for="showCarbonActivity">Show Carbon Activity</label>
+                  <p-inputSwitch 
+                    id="showCarbonActivity" 
+                    [(ngModel)]="editableProfile.settings.privacySettings.showCarbonActivity"
+                  ></p-inputSwitch>
+                </div>
+                
+                <div class="form-field switch-field">
+                  <label for="showTransactionHistory">Show Transaction History</label>
+                  <p-inputSwitch 
+                    id="showTransactionHistory" 
+                    [(ngModel)]="editableProfile.settings.privacySettings.showTransactionHistory"
+                  ></p-inputSwitch>
+                </div>
+              </div>
+            </p-card> -->
+            
+            <div class="settings-actions">
+              <button 
+                pButton 
+                label="Save Settings" 
+                icon="pi pi-save" 
+                (click)="updateSettings()"
+                [loading]="loading.updateSettings"
+              ></button>
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
